@@ -117,7 +117,8 @@ component tx_fsm is
     clk => clk,          
     tx_data_valid=> tx_data_valid,   
     tx_data=>tx_data,      
-    tx_i=> tx_i        
+    tx_i=> tx_i
+     
     );
 			  
 			  

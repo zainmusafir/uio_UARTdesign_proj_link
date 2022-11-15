@@ -7,7 +7,7 @@ entity rx_fsm is
     
     clk :          in std_logic;
     areset_n :     in std_logic;
-    
+    rx   : in std_logic;
     
     rx_complete : in std_logic;
 	 
@@ -17,8 +17,10 @@ entity rx_fsm is
     rx_busy: out std_logic
 
     );
+	 
+end rx_fsm;
 
-    architecture behavioral of fsm_rx is
+architecture behavioral of rx_fsm is
 
         type state_type is (Sidle, Sreceive);
         signal state : state_type; 
@@ -28,12 +30,15 @@ entity rx_fsm is
 
         p_state : process(clk) is
 
+		  
+		  begin
+		  
         if(rx='0') then
             state<= Sreceive;
-				
+		  end if;	
            
         
-        if (risingedge(clk)) then
+        if (rising_edge(clk)) then
             case state is
                 when Sidle => 
                    rx_busy <= '0';
@@ -59,9 +64,9 @@ entity rx_fsm is
          
         
 
-        end process
+        end process p_state;
 
-    end behavioral;        
+end behavioral;        
 
                 
 

@@ -9,7 +9,7 @@ entity bitcounter_rx is
            rx_complete: out std_logic
            --counter: out std_logic 
      );
-end bitcounter;
+end bitcounter_rx;
 
 architecture Behavioral of bitcounter_rx is
 
@@ -38,8 +38,7 @@ process(clk)
 	 
 	 if (counter_up= 10) then
 	 
-		counter_up <= 0;
-		
+		counter_up <= 0;	
 		rx_complete <= '1';	
     end if;
 	 
@@ -48,12 +47,6 @@ process(clk)
 
 end process;
 
-
-    
-
-	 
-	  
-	 
 	 
         baudrate_r <= baudrate;
 		  baudrate_enable<= not baudrate and baudrate_r;   -- that d flip flop thingy that generates proper baud pulses to be detected
