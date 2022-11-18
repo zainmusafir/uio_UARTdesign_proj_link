@@ -1,0 +1,72 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity tx_fsm_tb is
+end entity;
+
+architecture tb of tx_fsm_tb is
+
+  signal clk : std_logic;
+  signal areset_n: std_logic;
+  signal tx_data_valid: std_logic;
+  signal tx_complete: std_logic;
+  signal tx_enable: std_logic;
+  signal tx_busy: std_logic;
+  
+  
+  signal clk_period : time := 20 ns;
+
+begin
+
+
+
+	clk <= not clk after clk_period/2 when clk_enable else '0';
+ 
+ 
+  dut: entity work.state_machine(behavioral) 
+  
+  
+    port map(
+		clk => clk,
+		areset_n => areset_n,
+		tx_data_valid => tx_data_valid,
+		
+		
+      tx_complete => tx_complete,
+
+		tx_enable => tx_enable,
+		tx_busy => tx_busy
+    );
+  
+
+  
+  p_stimuli: process
+  begin
+	
+
+	
+	tx_data_valid <= '0'; 
+	tx_complete <= '0';
+	areset_n <= '1';
+	
+    wait until rising_edge(clk);
+	tx_data_valid <= '1'; 
+	
+	wait until rising_edge(clk);
+	
+	tx_data_valid <= '0';
+	wait for 50 ns;
+	areset_n <= '0';
+	
+	
+	wait until rising_edge(clk);
+	tx_complete <= '1';
+	wait until rising_edge(clk);
+	tx_complete <= '0';
+
+	
+	wait;
+	
+  end process;
+
+end architecture;
