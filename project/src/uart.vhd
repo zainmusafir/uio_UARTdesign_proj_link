@@ -85,7 +85,7 @@ areset_n => areset_n,
 
 tx_data => mm_tx_data,
 tx_busy => tx_busy,
-tx_bit => tx);
+tx => tx);
 
 
 
@@ -94,7 +94,7 @@ receiver : UART_rx
  port map
  
  (clk => clk,
-areset_n => arst_n,
+areset_n => areset_n,
 rx_data => rx_data,
 rx_err => rx_err,
 rx_busy => rx_busy,
@@ -118,19 +118,19 @@ rx => rx);
 		
 		
         if tx_busy='1' and mm_tx_busy='0' then
-            mm_status(0) <='0';
+            mm_status(0) <='0'; --txdatavalid
         end if;
 		  
         
         if mm_tx_busy='1' and tx_busy='0' then
-            mm_status(4) <= '1';
+            mm_status(4) <= '1';     --txirq
 				
         end if;
 		  
 		  
         
         if mm_rx_busy='1' and rx_busy='0' then
-            mm_status(5) <='1';
+            mm_status(5) <='1';   --rxirq
             mm_rx_data <= rx_data;
         end if;
         
@@ -145,8 +145,7 @@ rx => rx);
             when "10" =>  
               mm_status(5) <= '0';  --rxirq
               mm_status(4) <= '0';  --txirq
-            when others =>
-              null;
+            
           end case;
         end if;
         
@@ -154,8 +153,7 @@ rx => rx);
           case addr is
             when "01" =>
               rdata <= x"000000" & mm_rx_data; 
-            when "10" =>
-              rdata <= x"000000" & mm_tx_status;
+            
             when others =>
               rdata <= x"00000000";  
           end case;
@@ -168,7 +166,7 @@ rx => rx);
   end process;
 
 
-irq <= mm_status(4) or mm_status(5);
+irq <= mm_status(4) or mm_status(5);  --txirq ord with rx irq interrupt to processor
 
 
 end architecture mixed;
