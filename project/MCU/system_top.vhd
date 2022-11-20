@@ -45,6 +45,8 @@ begin
   -- The irq input must therefore be synchronized
   p_sync: process(clk)
   begin 
+  
+  
     if rising_edge(clk) then
       irq_sync <= irq_sync(0) & irq; --synchronization shift register
     end if;
