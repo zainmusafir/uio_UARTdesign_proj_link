@@ -1,0 +1,38 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity UART_rx is
+
+	port (
+	 
+	 
+	 rx_data : out std_logic_vector(7 downto 0);
+	 rx_err: out std_logic;
+	 rx_busy : out std_logic;
+	 
+	 
+	 clk : in std_logic;
+	 areset_n : in std_logic;
+	 rx : in std_logic
+	 
+	 );
+	
+	end UART_rx;
+	
+architecture mixed of UART_rx is 
+	
+--signals and components
+
+	begin
+
+   process(clk)
+	
+	begin 
+	
+	
+	end process;
+
+
+
+
+	end mixed;	

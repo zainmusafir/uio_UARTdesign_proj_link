@@ -1,0 +1,112 @@
+|UART_rx
+clk => rx_fsm:statemachinerx.clk
+clk => baudrategen_rx:baudrategeneratorrx.clk
+clk => bitcounter_rx:bitcounterrx.clk
+clk => shift_rx:shiftregisterrx.clk
+areset_n => bitcounter_rx:bitcounterrx.areset_n
+rx => rx_fsm:statemachinerx.rx
+rx => shift_rx:shiftregisterrx.rx
+rx_data[0] << shift_rx:shiftregisterrx.rx_data[0]
+rx_data[1] << shift_rx:shiftregisterrx.rx_data[1]
+rx_data[2] << shift_rx:shiftregisterrx.rx_data[2]
+rx_data[3] << shift_rx:shiftregisterrx.rx_data[3]
+rx_data[4] << shift_rx:shiftregisterrx.rx_data[4]
+rx_data[5] << shift_rx:shiftregisterrx.rx_data[5]
+rx_data[6] << shift_rx:shiftregisterrx.rx_data[6]
+rx_data[7] << shift_rx:shiftregisterrx.rx_data[7]
+rx_err << shift_rx:shiftregisterrx.rx_err
+rx_busy << rx_fsm:statemachinerx.rx_busy
+
+
+|UART_rx|rx_fsm:statemachinerx
+clk => rx_enable~reg0.CLK
+clk => rx_busy~reg0.CLK
+clk => state.CLK
+rx => state.OUTPUTSELECT
+rx => state.OUTPUTSELECT
+rx_complete => state.OUTPUTSELECT
+rx_enable <= rx_enable~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_err <= comb.DB_MAX_OUTPUT_PORT_TYPE
+rx_busy <= rx_busy~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|UART_rx|baudrategen_rx:baudrategeneratorrx
+clk => count[0].CLK
+clk => count[1].CLK
+clk => count[2].CLK
+clk => count[3].CLK
+clk => count[4].CLK
+clk => count[5].CLK
+clk => count[6].CLK
+clk => count[7].CLK
+clk => count[8].CLK
+rx_enable => count[0].IN1
+rx_enable => baudrate.OUTPUTSELECT
+rx_enable => count[0].ENA
+rx_enable => count[8].ENA
+rx_enable => count[7].ENA
+rx_enable => count[6].ENA
+rx_enable => count[5].ENA
+rx_enable => count[4].ENA
+rx_enable => count[3].ENA
+rx_enable => count[2].ENA
+rx_enable => count[1].ENA
+baudrate <= baudrate.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|UART_rx|bitcounter_rx:bitcounterrx
+baudrate => ~NO_FANOUT~
+clk => counter_up[0].CLK
+clk => counter_up[1].CLK
+clk => counter_up[2].CLK
+clk => counter_up[3].CLK
+clk => rx_complete~reg0.CLK
+areset_n => counter_up.OUTPUTSELECT
+areset_n => counter_up.OUTPUTSELECT
+areset_n => counter_up.OUTPUTSELECT
+areset_n => counter_up.OUTPUTSELECT
+rx_complete <= rx_complete~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|UART_rx|shift_rx:shiftregisterrx
+clk => rx_err~reg0.CLK
+clk => rx_data[0]~reg0.CLK
+clk => rx_data[1]~reg0.CLK
+clk => rx_data[2]~reg0.CLK
+clk => rx_data[3]~reg0.CLK
+clk => rx_data[4]~reg0.CLK
+clk => rx_data[5]~reg0.CLK
+clk => rx_data[6]~reg0.CLK
+clk => rx_data[7]~reg0.CLK
+clk => rx_buffer[0].CLK
+clk => rx_buffer[1].CLK
+clk => rx_buffer[2].CLK
+clk => rx_buffer[3].CLK
+clk => rx_buffer[4].CLK
+clk => rx_buffer[5].CLK
+clk => rx_buffer[6].CLK
+clk => rx_buffer[7].CLK
+clk => rx_buffer[8].CLK
+clk => rx_buffer[9].CLK
+rx => ~NO_FANOUT~
+baudrate => ~NO_FANOUT~
+rx_complete => rx_err~reg0.ENA
+rx_complete => rx_data[0]~reg0.ENA
+rx_complete => rx_data[1]~reg0.ENA
+rx_complete => rx_data[2]~reg0.ENA
+rx_complete => rx_data[3]~reg0.ENA
+rx_complete => rx_data[4]~reg0.ENA
+rx_complete => rx_data[5]~reg0.ENA
+rx_complete => rx_data[6]~reg0.ENA
+rx_complete => rx_data[7]~reg0.ENA
+rx_data[0] <= rx_data[0]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[1] <= rx_data[1]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[2] <= rx_data[2]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[3] <= rx_data[3]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[4] <= rx_data[4]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[5] <= rx_data[5]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[6] <= rx_data[6]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_data[7] <= rx_data[7]~reg0.DB_MAX_OUTPUT_PORT_TYPE
+rx_err <= rx_err~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
