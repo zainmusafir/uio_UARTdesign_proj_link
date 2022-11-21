@@ -14,6 +14,7 @@ is controlled from HW and not SW. The compile will therefor not
 find any code that controls this variable, and if not declared as
 volatile, the compile may decided to optimize and remove this variable. */
 volatile int edge_capture;
+volatile int uart_status;
 
 /* This is the ISR which will be called when the system signals an interrupt. */
 static void handle_interrupts(void* context)
@@ -32,6 +33,21 @@ static void handle_interrupts(void* context)
     IOWR_ALTERA_AVALON_PIO_EDGE_CAP(PIO_IRQ_BASE,0);
 
 }
+
+
+static void handle_interrupt_uart(void* context)
+{   
+   
+    volatile int* uart_status_ptr = (volatile int*) context;
+    //Read the UART module’s status register and store the value in the volatile int variable uart_status.
+    
+    *uart_status_ptr = IORD(UART_BASIC_BASE,0);
+    //Reset the interrupt bits in the UART module’s status register. This is done by performing a 
+    //write operation to the UART’s status register.
+    IOWR(UART_BASIC_BASE,0,0);
+
+}
+
 
 /* This function is used to initializes and registers the interrupt handler. */
 static void init_interrupt_pio()
@@ -58,19 +74,51 @@ static void init_interrupt_pio()
 
 }
 
+static void init_interrupt_uart()
+{
+    //Recast the uart_status_ptr  to match the alt_irq_register() function prototype
+    //Note that uart_status has been declared as a volatile int up top
+    void* uart_status_ptr = (void*)&uart_status;
+    //Register the interrupt handler in the system
+    //The ID and UART_BASIC_0_IRQ number is available from the system.h file.
+    alt_ic_isr_register(UART_BASIC_0_IRQ_INTERRUPT_CONTROLLER_ID,
+        UART_BASIC_0_IRQ, handle_interrupt_uart, uart_status_ptr, 0x0);
+}
+
+
 
 int main(){
     printf("Hello, World!\n");
     int sw_data = 1;
 
     // Initialize the interrupt
-    init_interrupt_pio();
+    init_interrupt_pio();init_interrupt_uart();
     
     while(1){
         //Access registers using IORD and IOWR from io.h
         sw_data = IORD(PIO_SW_BASE,0);
         IOWR(PIO_LED_BASE,0,sw_data);
         
+
+         if (uart_status>0)
+        {
+            //Check if rx_irq bit is set
+            if ((uart_status >> 5) & 0x1)   //rx bit 
+            {
+            
+            rx_data=IORD(UART_BASIC_BASE,1);
+            IOWR(UART_BASIC_BASE,1,rx_data);   //write to tx
+            }
+
+             
+            if ((uart_status >> 4) & 0x1) //tx bit 
+            {   
+            
+        
+            }  
+            // Now some of the other status bits may have been set, but we
+            // don´t do anything with them yet
+        }
         //Alternative solution using PIO macros
         //sw_data = IORD_ALTERA_AVALON_PIO_DATA(PIO_SW_BASE);
         //IOWR_ALTERA_AVALON_PIO_DATA(PIO_LED_BASE,sw_data);
