@@ -1,0 +1,97 @@
+C:/Users/zainf/Documents/FYS4220/commproject/src/shift_tx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/shift_tx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity shift_tx
+-- Compiling architecture behavioral of shift_tx
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/baudrategen.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/baudrategen.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity baudrategen
+-- Compiling architecture Behavioral of baudrategen
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/baudrategen_rx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/baudrategen_rx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity baudrategen_rx
+-- Compiling architecture Behavioral of baudrategen_rx
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/rx_fsm.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/rx_fsm.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity rx_fsm
+-- Compiling architecture behavioral of rx_fsm
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/tb/uart_tb.vhd {0 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/tb/uart_tb.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+** Error: C:/Users/zainf/Documents/FYS4220/commproject/tb/uart_tb.vhd(9): near "context": syntax error
+
+} {7.0 8.0} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/bitcounter.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/bitcounter.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity bitcounter
+-- Compiling architecture Behavioral of bitcounter
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/tx_fsm.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/tx_fsm.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity tx_fsm
+-- Compiling architecture behavioral of tx_fsm
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/UART_rx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/UART_rx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity UART_rx
+-- Compiling architecture mixed of UART_rx
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/shift_rx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/shift_rx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity shift_rx
+-- Compiling architecture behv of shift_rx
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/UART_tx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/UART_tx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity UART_tx
+-- Compiling architecture mixed of UART_tx
+
+} {} {}} C:/Users/zainf/Documents/FYS4220/commproject/src/bitcounter_rx.vhd {1 {vcom -work work -2002 -explicit -stats=none C:/Users/zainf/Documents/FYS4220/commproject/src/bitcounter_rx.vhd
+Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package STD_LOGIC_UNSIGNED
+-- Compiling entity bitcounter_rx
+-- Compiling architecture Behavioral of bitcounter_rx
+
+} {} {}}

@@ -27,7 +27,7 @@ end entity;
 
 
 
-architecture mixed of uart is
+architecture rtl of uart is
     
 	 
     signal rx_data         : std_logic_vector (7 downto 0);
@@ -37,6 +37,15 @@ architecture mixed of uart is
     signal mm_rx_data      : std_logic_vector(7 downto 0); 
 	 
     signal mm_tx_status    : std_logic_vector(7 downto 0) := "00000000";
+	 
+	 alias mm_tx_data_valid :std_logic is mm_tx_status(0);
+	 alias mm_tx_busy :std_logic is mm_tx_status(1);
+	 alias mm_rx_busy :std_logic is mm_tx_status(2);
+	 alias mm_rx_err  :std_logic is mm_tx_status(3);
+	 alias mm_tx_irq  :std_logic is mm_tx_status(4);
+	 alias mm_rx_irq :std_logic is mm_tx_status(5);
+	 
+	 
    
     signal tx_busy         : std_logic;
     signal rx_busy         : std_logic;
@@ -45,6 +54,11 @@ architecture mixed of uart is
     signal areset_n :  std_logic;
 	 signal tx_data_valid :  std_logic;
 	 signal tx_data :  std_logic_vector(7 downto 0);
+	 
+	 
+	 
+	 
+	 
 
 component UART_rx is
     port (
@@ -77,6 +91,10 @@ component UART_tx is
 	 tx_busy : out std_logic
 	 );
     end component;
+	 
+	 
+	 
+	 
 
 begin
 
@@ -123,20 +141,28 @@ rx => rx);
       elsif rising_edge(clk) then
 		
 		
-        if tx_busy='1' and mm_tx_status(1)='0' then  --tx_busy and txbusy status bit
-            mm_tx_status(0) <='0'; --txdatavalid
+        if tx_busy='1' and mm_tx_busy='0' then  --tx_busy and txbusy status bit
+            mm_tx_data_valid <='0'; --txdatavalid
         end if;
 		  
         
-        if mm_tx_status(1)='1' and tx_busy='0' then
-            mm_tx_status(4) <= '1';     --txirq
+--Bit 0: tx_data_valid
+--Bit 1: tx_busy
+--Bit 2: rx_busy
+--Bit 3: rx_err
+--Bit 4: tx_irq
+--Bit 5: rx_irq
+--Bit 6?7: Not in use
+
+        if mm_tx_busy='1' and tx_busy='0' then
+            mm_tx_irq <= '1';     --txirq
 				
         end if;
 		  
 		  
         
-        if mm_tx_status(2)='1' and rx_busy='0' then
-            mm_tx_status(5) <='1';   --rxirq
+        if mm_rx_busy='1' and rx_busy='0' then
+            mm_rx_irq <='1';   --rxirq
             mm_rx_data <= rx_data;
         end if;
         
@@ -146,11 +172,11 @@ rx => rx);
           case addr is
             when "00" =>  
               mm_tx_data <= wdata (7 downto 0);
-              mm_tx_status(0)<='1';
+              mm_tx_data_valid<='1';
 				  
             when "10" =>  
-              mm_tx_status(5) <= '0';  --rxirq
-              mm_tx_status(4) <= '0';  --txirq
+              mm_rx_irq <= '0';  --rxirq
+              mm_tx_irq <= '0';  --txirq
             when others =>
 				 null;
           end case;
@@ -160,6 +186,7 @@ rx => rx);
           case addr is
             when "01" =>
               rdata <= x"000000" & mm_rx_data; 
+				  
             
             when others =>
               rdata <= x"00000000"; 
@@ -167,14 +194,14 @@ rx => rx);
           end case;
         end if;
       
-      mm_tx_status(1) <= tx_busy;  --txbusybit
-      mm_tx_status(2) <= rx_busy;   -- rxbusybit
-      mm_tx_status(3) <= rx_err;   --error bit
+      mm_tx_busy <= tx_busy;  --txbusybit
+      mm_rx_busy <= rx_busy;   -- rxbusybit
+      mm_rx_err <= rx_err;   --error bit
     end if; 
   end process;
 
 
-irq <= mm_tx_status(4) or mm_tx_status(5);  --txirq ord with rx irq interrupt to processor
+irq <= mm_tx_irq or mm_rx_irq;  --txirq orredd with rx irq interrupt to processor
 
 
-end architecture mixed;
+end architecture rtl;
