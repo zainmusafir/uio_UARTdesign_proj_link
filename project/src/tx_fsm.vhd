@@ -18,52 +18,42 @@ entity tx_fsm is
 	 end tx_fsm;
 
     architecture behavioral of tx_fsm is
-	 
-        type state_type is (Sidle, Stransmit);
+
+        type state_type is (sIDLE, sTRANSMIT);
         signal state : state_type;
-    
-     
-        begin
 
-        p_state : process(clk) is
- 
- 
-        begin 
-		  
-        if(areset_n='0') then
-            state<= Sidle;
-            --tx_enable<=0;
-            --tx_busy<=0;
-        
-        else if (rising_edge(clk)) then
+     begin
+
+    process(clk)
+	      begin
+        if areset_n = '0' then
+            state <= sIDLE;
+            tx_enable <= '0';
+            tx_busy <= '0';
+
+        elsif rising_edge(clk) then
+            tx_enable <= '0';
+            tx_busy <= '0';
             case state is
-                when Sidle =>
-                    tx_enable<='0';
-                    tx_busy<='0';
-                  if (tx_data_valid = '1') then
-                    state <= Stransmit;
-                  end if;
-          
-                when Stransmit =>
-                tx_enable<='1';
-                tx_busy<='1';
-                  if (tx_complete = '1') then
-                    state <= Sidle;
-                  end if;
+                when sIDLE =>
+                    if tx_data_valid  = '1' then
+                        state <= sTRANSMIT;
+                    end if;
 
+                when sTRANSMIT =>
+                    tx_busy <= '1';
+                    tx_enable <= '1';
+
+                    if tx_complete = '1' then
+                        state <= sIDLE;
+
+                    end if;
+                    
+                when others =>
+                    state <= sIDLE;
             end case;
-        
         end if;
-	     
-	     end if;	  
-        
-        
 
-        end process;
+    end process;
 
-    end behavioral;        
-
-                
-
-
-
+end architecture;

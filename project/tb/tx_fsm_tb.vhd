@@ -6,67 +6,63 @@ end entity;
 
 architecture tb of tx_fsm_tb is
 
-  signal clk : std_logic;
-  signal areset_n: std_logic;
-  signal tx_data_valid: std_logic;
-  signal tx_complete: std_logic;
-  signal tx_enable: std_logic;
-  signal tx_busy: std_logic;
-  
-  
-  signal clk_period : time := 20 ns;
+    
+    signal clk_ena      : boolean   := false;
+    signal clk          : std_logic := '0';
+    constant clk_period : time      := 20 ns;
+
+    
+    signal areset_n     : std_logic := '1';
+    signal tx_data_valid: std_logic := '0';
+    signal tx_complete  : std_logic := '0';
+
+
+    signal tx_busy      : std_logic;
+    signal tx_enable    : std_logic;
 
 begin
+   
+    clk <= not clk after clk_period/2 when clk_ena else '0';
+    
+    TX_FSM: entity work.tx_fsm(behavioral)
+      port map(
+        clk => clk,
+        tx_data_valid => tx_data_valid,
+        tx_complete => tx_complete,
+        areset_n => areset_n,
 
 
 
-	clk <= not clk after clk_period/2 when clk_enable else '0';
+        tx_busy => tx_busy,
+        tx_enable => tx_enable
+      );
  
- 
-  dut: entity work.state_machine(behavioral) 
-  
-  
-    port map(
-		clk => clk,
-		areset_n => areset_n,
-		tx_data_valid => tx_data_valid,
-		
-		
-      tx_complete => tx_complete,
+    p_stimuli : process
+    begin
+        clk_ena <= true;
+        
+        
+        tx_data_valid <= '1';
+        wait for 50 ns;
+        
+        tx_data_valid <= '0';
+       
+        tx_complete   <= '1';
+        wait for 50 ns;
+        tx_complete   <= '0';
 
-		tx_enable => tx_enable,
-		tx_busy => tx_busy
-    );
-  
+        
+        tx_data_valid <= '1';
+        wait for 50 ns;
 
-  
-  p_stimuli: process
-  begin
-	
+        tx_data_valid <= '0';
+        wait for 50 ns;
 
-	
-	tx_data_valid <= '0'; 
-	tx_complete <= '0';
-	areset_n <= '1';
-	
-    wait until rising_edge(clk);
-	tx_data_valid <= '1'; 
-	
-	wait until rising_edge(clk);
-	
-	tx_data_valid <= '0';
-	wait for 50 ns;
-	areset_n <= '0';
-	
-	
-	wait until rising_edge(clk);
-	tx_complete <= '1';
-	wait until rising_edge(clk);
-	tx_complete <= '0';
+        areset_n <= '0';
+        wait for 150 ns;
 
-	
-	wait;
-	
-  end process;
+        clk_ena <= false;
+        wait;
+    end process;
 
 end architecture;
