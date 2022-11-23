@@ -29,11 +29,9 @@ signal rx_enable : std_logic;
     
     clk :  in std_logic;   
     rx   : in std_logic;
-    
+    areset_n : in std_logic;
     rx_complete : in std_logic;
 	 rx_enable : out std_logic;
-
-    rx_err : out std_logic;
     rx_busy: out std_logic
 
     );
@@ -78,7 +76,7 @@ signal rx_enable : std_logic;
 statemachinerx :rx_fsm
 
 	port map ( clk =>clk,
-    
+    areset_n => areset_n,
     rx => rx,
     rx_complete =>rx_complete,
 	 rx_enable =>rx_enable,
@@ -101,7 +99,7 @@ shiftregisterrx : shift_rx
 
      port map(
 	  
-	  clk => clk,
+	    clk => clk,
        rx  => rx,
        baudrate => baudrate,
        rx_complete => rx_complete,

@@ -6,7 +6,7 @@ entity rx_fsm is
     Port ( 
     
     clk :   in std_logic;
-    --areset_n :     in std_logic;
+    areset_n :     in std_logic;
     rx   : in std_logic;
     
     rx_complete : in std_logic;
@@ -35,9 +35,16 @@ architecture behavioral of rx_fsm is
         if (rising_edge(clk)) then
 		  
 		  
+		   if  areset_n='0' then 
+			state <= Sidle;
+			end if;
+			
+		  
 			if(rx='0') then
             state<= Sreceive;
 			end if;
+			
+			
             case state is
                 when Sidle => 
                    rx_busy <= '0';
@@ -50,7 +57,7 @@ architecture behavioral of rx_fsm is
           
                 when Sreceive =>
                    
-						rx_enable <= '1';
+						  rx_enable <= '1';
 						 
                   if rx_complete  = '1' then
                     state <= Sidle;

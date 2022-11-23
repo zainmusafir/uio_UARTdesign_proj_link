@@ -22,8 +22,14 @@ signal baudrate_enable : std_logic;
 process(clk)
 
   begin
+  
+  
+  
+  if( areset_n= '0') then 
+		counter_up <= 0;
+	
 
- if(rising_edge(clk)) then
+   elsif(rising_edge(clk)) then
 
     if(baudrate_enable ='1') then   --checking for baud pulse and counting,
 
@@ -32,9 +38,7 @@ process(clk)
 
     end if; 
 	 
-	 if( areset_n= '0') then 
-		counter_up <= 0;
-	 end if;
+	 
 	 
 	 if (counter_up= 10) then
 	 

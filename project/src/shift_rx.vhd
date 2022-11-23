@@ -30,6 +30,8 @@ begin
 process(clk)
   begin
     if rising_edge(clk) then
+	   baudrate_r <= baudrate;
+	 
       if baudrate_enable = '1' then  --rising enable pulse that samples received bits almost after half of baud cycle
         rx_buffer <= rx & rx_buffer(9 downto 1);
       end if;
