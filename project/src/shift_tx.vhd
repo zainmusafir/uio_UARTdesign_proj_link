@@ -41,7 +41,8 @@ begin
 
 		
 	 if(rising_edge(clk)) then 
-	     baudrate_r <= baudrate;
+	     
+		  baudrate_r <= baudrate;
 		  
 		  
 		  

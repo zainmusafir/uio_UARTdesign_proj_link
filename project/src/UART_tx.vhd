@@ -27,7 +27,7 @@ entity UART_tx is
 	
 	end UART_tx;
 	
-architecture mixed of UART_tx is 
+architecture rtl of UART_tx is 
 
 --signals and components
 
@@ -79,10 +79,11 @@ component tx_fsm is
 	 end component;
 	
 	
-	signal tx_complete : std_logic;
+	signal tx_completec : std_logic;
 	signal tx_enable : std_logic;
 	signal baudrate : std_logic;
 	signal tx_i : std_logic;
+	--signal tx_data
 	
 
 	begin
@@ -93,11 +94,15 @@ component tx_fsm is
 	
 	port map( clk=>clk, 
 	     areset_n=>areset_n, 
+		  
 		  tx_data_valid => tx_data_valid,
 		  
 		  
-		  tx_complete => tx_complete,
-		  tx_busy => tx_busy) ;
+		  tx_complete => tx_completec,
+		  tx_busy => tx_busy,
+		  tx_enable => tx_enable
+		  
+		  ) ;
 	
 	
 	
@@ -105,9 +110,13 @@ component tx_fsm is
 	
 	 port map( clk=>clk,
            tx_enable=> tx_enable,
-           baudrate=> baudrate );
+           baudrate=> baudrate
+			 
+			 );
 			  
-			  
+   bitcountertx : bitcounter
+	port map(clk=>clk, baudrate=>baudrate, areset_n => areset_n, tx_complete=>tx_completec);
+	
 			  
    shiftregister : shift_tx
 	
@@ -144,4 +153,4 @@ component tx_fsm is
 
 
 
-	end mixed;	
+	end rtl;	

@@ -5,9 +5,11 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity bitcounter is
     Port ( baudrate: in std_logic; 
            clk: in std_logic; 
-		   areset_n: in std_logic;    --input to reset the counter
+		     areset_n: in std_logic;    --input to reset the counter
+			  
+			  
            tx_complete: out std_logic
-           --counter: out std_logic 
+           
      );
 end bitcounter;
 
@@ -23,41 +25,39 @@ process(clk)
 
   begin
 
- if(rising_edge(clk)) then
-
-    if(baudrate_enable ='1') then   --checking for baud pulse and counting,
-
-        tx_complete<='0';
+  
+  if( areset_n= '0') then 
+		counter_up <= 0;
+		tx_complete<='0';
+	 --end if;
+  
+  
+   elsif(rising_edge(clk)) then
+	
+	   baudrate_r <= baudrate;
+      tx_complete<='0';
+		
+		
+		
+    if(baudrate_enable ='1') then   --checking for baud pulse and counting
+        
         counter_up <= counter_up + 1;
 
     end if;
     
 	 
-	 
-	 if( areset_n= '0') then 
-		counter_up <= 0;
-	 end if;
-	 
 	 if (counter_up= 10) then
 	 
 		counter_up <= 0;
-		
 		tx_complete <= '1';	
     end if;
 	 
 	 
  end if;
 
-end process;
-
-
-    
-
+end process; 
 	 
-	  
-	 
-	 
-        baudrate_r <= baudrate;
+        
 		  baudrate_enable<= not baudrate and baudrate_r;   -- that d flip flop thingy that generates proper baud pulses to be detected
      
 

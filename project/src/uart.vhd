@@ -18,9 +18,11 @@ entity uart is
     we           : in std_logic;
     re           : in std_logic;
     wdata        : in std_logic_vector (31 downto 0);
-    rdata        : out std_logic_vector (31 downto 0);
+    
     addr         : in std_logic_vector (1 downto 0);
- 
+	 
+	 
+    rdata        : out std_logic_vector (31 downto 0);
     irq          : out std_logic
   );
 end entity;
@@ -51,8 +53,8 @@ architecture rtl of uart is
     signal rx_busy         : std_logic;
     signal rx_err          : std_logic;
   
-    signal areset_n :  std_logic;
-	 signal tx_data_valid :  std_logic;
+    --signal areset_n :  std_logic;
+	 --signal tx_data_valid :  std_logic;
 	 signal tx_data :  std_logic_vector(7 downto 0);
 	 
 	 
@@ -101,12 +103,12 @@ begin
 transmitter : UART_tx
 
  port map(
- clk => clk,
-tx_data_valid => tx_data_valid,
-areset_n => areset_n,
+clk => clk,
+tx_data_valid => mm_tx_data_valid,   --of the register
+areset_n => arst_n,
 
 
-tx_data => tx_data,
+tx_data => mm_tx_data,
 tx_busy => tx_busy,
 tx => tx
 );
@@ -118,8 +120,8 @@ receiver : UART_rx
  port map
  
  (clk => clk,
-areset_n => areset_n,
-rx_data => rx_data,
+areset_n => arst_n,
+rx_data => mm_rx_data,
 rx_err => rx_err,
 rx_busy => rx_busy,
 rx => rx);
@@ -187,7 +189,10 @@ rx => rx);
             when "01" =>
               rdata <= x"000000" & mm_rx_data; 
 				  
-            
+            when "10"=>
+				   
+				  rdata <= x"000000" & mm_tx_status; 
+				
             when others =>
               rdata <= x"00000000"; 
 				 
