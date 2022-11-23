@@ -31,18 +31,19 @@ architecture behavioral of rx_fsm is
 
 		  
 		  begin
-
-        if (rising_edge(clk)) then
 		  
-		  
-		   if  areset_n='0' then 
+         if  areset_n='0' then 
 			state <= Sidle;
-			end if;
+			rx_busy <= '0';
+	      rx_enable <= '0';
 			
+			
+         elsif (rising_edge(clk)) then
 		  
-			if(rx='0') then
-            state<= Sreceive;
-			end if;
+		  
+		   
+		  
+			
 			
 			
             case state is

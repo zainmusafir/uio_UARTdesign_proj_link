@@ -27,18 +27,23 @@ entity tx_fsm is
     process(clk)
 	      begin
       
-
-        if rising_edge(clk) then
-
-            if areset_n = '0' then
+          if areset_n = '0' then
             state <= Sidle;
-            end if;
+            tx_busy <='0';
+				tx_enable <='0';
+				
+
+
+          elsif rising_edge(clk) then
 
            
             case state is
                 when Sidle =>
+					  tx_enable <='0';
+					  tx_busy <= '0';
                     if tx_data_valid  = '1' then
                         state <= Stransmit;
+								
                     end if;
 
                 when Stransmit =>

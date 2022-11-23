@@ -121,7 +121,7 @@ receiver : UART_rx
  
  (clk => clk,
 areset_n => arst_n,
-rx_data => mm_rx_data,
+rx_data =>rx_data,
 rx_err => rx_err,
 rx_busy => rx_busy,
 rx => rx);
@@ -141,7 +141,9 @@ rx => rx);
 		  
        
       elsif rising_edge(clk) then
-		
+		  mm_tx_busy <= tx_busy;  --txbusybit
+        mm_rx_busy <= rx_busy;   -- rxbusybit
+        mm_rx_err <= rx_err;   --error bit
 		
         if tx_busy='1' and mm_tx_busy='0' then  --tx_busy and txbusy status bit
             mm_tx_data_valid <='0'; --txdatavalid
@@ -199,10 +201,8 @@ rx => rx);
           end case;
         end if;
       
-      mm_tx_busy <= tx_busy;  --txbusybit
-      mm_rx_busy <= rx_busy;   -- rxbusybit
-      mm_rx_err <= rx_err;   --error bit
-    end if; 
+   
+     end if; 
   end process;
 
 

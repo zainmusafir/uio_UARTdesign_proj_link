@@ -9,7 +9,7 @@ entity shift_rx is
        rx_complete : in std_logic;
 
        rx_data : out std_logic_vector(7 downto 0);
-       rx_err : out std_logic
+       rx_err : out std_logic :='0' 
 
     );
 
@@ -40,7 +40,7 @@ process(clk)
 
       if (rx_complete ='1')  then   --8 bit data output of the receiver to the processor
          rx_data <= rx_buffer(8 downto 1);
-			rx_err <= rx_buffer(9) or rx_buffer(0);
+			rx_err <= not rx_buffer(9) or rx_buffer(0);
       end if;
 		
 
