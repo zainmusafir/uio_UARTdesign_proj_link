@@ -5,12 +5,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity rx_fsm is
     Port ( 
     
-    clk :          in std_logic;
-    areset_n :     in std_logic;
+    clk :   in std_logic;
+    --areset_n :     in std_logic;
     rx   : in std_logic;
     
     rx_complete : in std_logic;
-	 
 	 rx_enable : out std_logic;
 
     rx_err : out std_logic;
@@ -32,13 +31,13 @@ architecture behavioral of rx_fsm is
 
 		  
 		  begin
-		  
-        if(rx='0') then
-            state<= Sreceive;
-		  end if;	
-           
-        
+
         if (rising_edge(clk)) then
+		  
+		  
+			if(rx='0') then
+            state<= Sreceive;
+			end if;
             case state is
                 when Sidle => 
                    rx_busy <= '0';
@@ -57,7 +56,9 @@ architecture behavioral of rx_fsm is
                     state <= Sidle;
 						  
                   end if;
-
+                when others =>
+					   state <= Sidle;
+					 
             end case;
         
         end if;   
