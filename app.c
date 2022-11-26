@@ -92,16 +92,26 @@ int main(){
     printf("Hello, World!\n");
     int sw_data = 1;
     //accelerometer data
-    int return_code;
+    int return_codex;
+
+
+    alt_u8 spi_rx_data[6];
+    alt_u8 spi_tx_data[6];
 
     alt_u8 spi_tx[8];
     alt_u8 spi_rx[8];
 
     //reading from adXL regs
     spi_tx[0] = 0xc0 | 0x32; //multiple-byte read + address of first data register.
-    return_code = alt_avalon_spi_command(SPI_BASE,0,1,spi_tx,6,spi_rx,0);
+    return_codex = alt_avalon_spi_command(SPI_BASE,0,1,spi_tx,6,spi_rx,0);
 
-    
+
+ // To read device ID register send 0x80
+    spi_tx_data[0] = 0x80 | 0x0; //Single byte read + address
+    return_codex = alt_avalon_spi_command(SPI_BASE, 0, 1, spi_tx_data, 1, spi_rx_data, 0);
+
+
+printf("returned id : %x \n",*spi_rx_data);
     // Initialize the interrupt
     init_interrupt_pio();init_interrupt_uart();
     
