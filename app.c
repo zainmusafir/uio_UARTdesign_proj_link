@@ -4,6 +4,7 @@
 #include "unistd.h" //access to usleep
 #include "altera_avalon_pio_regs.h" //access to PIO macros
 #include <sys/alt_irq.h> // access to the IRQ routines
+#include "altera_avalon_spi.h"
 
 /* Declare a global variable to holds the edge capture value
 Declaring a variable as volatile tells the compiler that
@@ -90,7 +91,17 @@ static void init_interrupt_uart()
 int main(){
     printf("Hello, World!\n");
     int sw_data = 1;
+    //accelerometer data
+    int return_code;
 
+    alt_u8 spi_tx[8];
+    alt_u8 spi_rx[8];
+
+    //reading from adXL regs
+    spi_tx[0] = 0xc0 | 0x32; //multiple-byte read + address of first data register.
+    return_code = alt_avalon_spi_command(SPI_BASE,0,1,spi_tx,6,spi_rx,0);
+
+    
     // Initialize the interrupt
     init_interrupt_pio();init_interrupt_uart();
     
